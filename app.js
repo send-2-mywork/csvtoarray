@@ -2,6 +2,34 @@ var app = angular.module('csvToJson', []);
 
 app.controller('MainCtrl', function($scope) {
 	$scope.name = 'World';
+	var dataKeys = ["Headend1", "Headend2", "Channel", "Enabled", "Send Event Lists", "Get Logs", "Simulate Active", "AllowPastMidnightEventLists", "undefined"];
+	$scope.csvObject = {};
+	$scope.importData = [];
+	$scope.headnet = {};
+	//console.log(dataKeys);
+	$scope.$watch('fileContent', function(newValue, oldValue) {
+		//console.log($scope.fileContent);
+		if($scope.fileContent){
+			var csvData = $scope.fileContent;
+			for (var i = 1; i < csvData.length; i++) {
+				var currentRow = csvData[i];
+				for (var j = 0; j < currentRow.length; j++) {
+					var key = dataKeys[j];
+					var val = currentRow[j];
+					if (val != "") {
+						$scope.csvObject[key] = val;
+						$scope.importData.push($scope.csvObject);	
+					}
+				}
+			}
+			//console.log($scope.csvObject.Headend);
+		}
+		$scope.headnet.headnet = $scope.importData;
+		$scope.headnet.date = new Date();
+		//console.log($scope.headnet);
+	});
+
+	
 });
 
 app.directive('fileReader', function() {
@@ -100,14 +128,19 @@ app.directive('fileReader', function() {
 						}
 
 						function ArrayToJson( arrData ){ 
-							console.log(arrData.lenght);
+							//console.log(arrData);
+							//console.log(arrData.length);
+							for (var i = 0; i < arrData.length; i++) {
+								console.log(arrData[i]);
+							}
 						}
 				
 						var contents = e.target.result;
 						scope.$apply(function () {
-							scope.fileReader = JSON.stringify(CSVToArray(contents));
-							//console.log(scope.fileReader);
-							ArrayToJson(scope.fileReader);
+							scope.fileReader = CSVToArray(contents);
+
+							//ArrayToJson(scope.fileReader);
+
 						});
 					};
 				  

@@ -13,8 +13,11 @@
 
   <body ng-controller="MainCtrl">
     <p>Hello {{name}}!</p>
+    <input type="hidden" value="" ng-model="getArray" />
     <input type="file" file-reader="fileContent" />
-    <div>{{fileContent}}</div>
+    <!-- <div>{{fileContent}}</div> -->
+
+    <div><pre>{{headnet | json }}</pre></div>
   </body>
 
 </html>
